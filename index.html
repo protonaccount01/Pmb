@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Ad</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="//libtl.com/sdk.js" data-zone="10619721" data-sdk="show_10619721"></script>
+    <style>
+        body { background-color: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .message { font-size: 18px; color: #ccc; text-align: center; }
+    </style>
+</head>
+<body>
+    <div id="msg" class="message">Loading Ad... Please wait.</div>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        const params = new URLSearchParams(window.location.search);
+
+        function finishAndSend() {
+            document.getElementById('msg').innerText = "Processing your request...";
+            fetch('/api/webhook', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    is_ad_complete: true,
+                    cmd: params.get('cmd'),
+                    data: params.get('data'),
+                    mid: parseInt(params.get('mid')),
+                    adMid: parseInt(params.get('adMid')),
+                    cid: parseInt(params.get('cid'))
+                })
+            }).then(() => tg.close()).catch(() => tg.close());
+        }
+
+        window.onload = () => {
+            if (typeof show_10619721 === 'function') {
+                show_10619721().then(() => finishAndSend()).catch(() => finishAndSend());
+            } else { finishAndSend(); }
+        };
+    </script>
+</body>
+</html>

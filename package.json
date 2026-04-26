@@ -1,0 +1,11 @@
+{
+  "name": "pmbfast",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "npm install"
+  },
+  "dependencies": {
+    "telegraf": "^4.16.3"
+  }
+}
